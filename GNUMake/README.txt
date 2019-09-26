@@ -37,3 +37,37 @@ eg:
     上面的例子中，指明目标 objects 中获取，%o 表示所有 .o 结尾的文件为目标，
     %c 表示所有.c 结尾的为依赖，$< 和 $@ 是自动变量， $< 为所有的依赖
     $@ 为所有的目标 
+
+    wildcard函数
+    当变量的定义和函数使用时，通配符将失效，这种情况下我们用这个函数
+    eg" $(patsubst %.c, %.o, $(wildcard *.c))"
+    patsubst函数
+    替换应用
+    eg: foo:a.o b.o c.o
+        bar:$(foo:.o=.c)
+    ontdir函数
+    去除路径
+    eg:  src=$(wildcard *.c ./sub/*.c)
+         dir=$(notdir $(src))
+         obj=$(patsubs %.c, %.o, $(dir))
+
+         第一行输出 a.c b.c ./sub/sa.c ./sub/sb.c
+         第二行输出 a.c b.c sa.c sb.c
+         第三行输出 a.o b.o sa.o sb.o
+    -include filename
+    这种指令的作用就是对任何不存在的makefile 文件都不产生错误
+    (即使警告也不产生) 如果希望和其他版本的make 兼容使用这个函数
+    sinclude 代替 -include
+
+    addprefix函数
+    该addprefix就是用于添加前缀的
+    suffix函数
+    取后缀函数——suffix
+    basename函数
+    取前缀函数
+    加后缀函数——addsuffix
+    示例：$(addsuffix .c,foo bar)返回值是“foo.c bar.c”
+    加前缀函数——addprefix
+    $(addprefix src/,foo bar)返回值是“src/foo src/bar”
+    连接函数——join
+    示例：$(join aaa bbb , 111 222 333)返回值是“aaa111 bbb222 333”

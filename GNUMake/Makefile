@@ -164,6 +164,8 @@ ifeq ($(obj)include/config.mk,$(wildcard $(obj)include/config.mk))
 # Include autoconf.mk before config.mk so that the config options are available
 # to all top level build files.  We need the dummy all: target to prevent the
 # dependency target in autoconf.mk.dep from being the default.
+# 在config.nk 之前包含autoconf.mk 以便所有顶层生成文件可以使用配置选项 
+# 我们需要 dummy all:target 来防止autoconf.mk 中的依赖文件成为默认值
 all:
 sinclude $(obj)include/autoconf.mk.dep
 sinclude $(obj)include/autoconf.mk
@@ -177,16 +179,20 @@ include $(obj)include/config.mk
 export	ARCH CPU BOARD VENDOR SOC
 
 # set default to nothing for native builds
+# 可以设置本地生成
 ifeq ($(HOSTARCH),$(ARCH))
 CROSS_COMPILE ?=
 endif
 
 # load other configuration
+# 加载其他配置
 include $(TOPDIR)/config.mk
 
 # If board code explicitly specified LDSCRIPT or CONFIG_SYS_LDSCRIPT, use
 # that (or fail if absent).  Otherwise, search for a linker script in a
 # standard location.
+# 如果板子明确指定 LDSSCRIPT or CONFIG_SYS_LDSCRIPT, 使用它们(如果不存在失败)
+# 否则，在标准位置搜索连接器
 
 LDSCRIPT_MAKEFILE_DIR = $(dir $(LDSCRIPT))
 
@@ -199,6 +205,7 @@ ifndef LDSCRIPT
 endif
 
 # If there is no specified link script, we look in a number of places for it
+# 如果没有指定链接脚本，我们会在许多地方查找他
 ifndef LDSCRIPT
 	ifeq ($(CONFIG_NAND_U_BOOT),y)
 		LDSCRIPT := $(TOPDIR)/board/$(BOARDDIR)/u-boot-nand.lds
@@ -224,6 +231,7 @@ endif
 
 #########################################################################
 # U-Boot objects....order is important (i.e. start must be first)
+# uboot 项目顺序很重要 i.e. start must be first 
 
 OBJS  = $(CPUDIR)/start.o
 ifeq ($(CPU),x86)
